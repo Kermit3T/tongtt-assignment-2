@@ -122,6 +122,11 @@ function updateVisualization() {
     }
 
     console.log("Visualization updated.");
+
+    // Check if the last step is reached and show an alert
+    if (currentStep === history.length - 1) {
+        alert("The KMeans algorithm has converged.");
+    }
 }
 
 // Event Listeners

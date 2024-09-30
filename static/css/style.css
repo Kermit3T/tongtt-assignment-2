@@ -5,6 +5,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: #F6F7F2; /* Main background color */
+    color: #013222; /* Main text color */
 }
 
 #controls {
@@ -15,8 +17,20 @@ body {
 
 button, select {
     padding: 5px 10px;
+    background-color: #004D14; /* Button background color */
+    color: #F6F7F2; /* Button text color */
+    border: 1px solid #013222; /* Button border color */
+}
+
+button:hover, select:hover {
+    background-color: #E9EDE4; /* Button hover background color */
+    color: #013222; /* Button hover text color */
 }
 
 #visualization {
-    border: 1px solid #ccc;
+    border: 1px solid #013222; /* Visualization border color */
+}
+
+h1 {
+    color: #013222; /* Header text color */
 }
