@@ -21,4 +21,6 @@ jobs:
 
     - name: Run application
       run: |
-        timeout 20s python app.py
+        nohup python app.py &
+        sleep 20
+        pkill -f "python app.py"
