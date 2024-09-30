@@ -35,14 +35,15 @@ function generateData() {
 function runKMeans() {
     console.log("Running KMeans...");
     const initMethod = document.getElementById("initialization-method").value;
-    if (initMethod === 'manual' && manualCentroids.length < 3) {
-        alert("Please select at least 3 centroids manually.");
+    const numClusters = parseInt(document.getElementById("num-clusters").value, 10);
+    if (initMethod === 'manual' && manualCentroids.length < numClusters) {
+        alert(`Please select at least ${numClusters} centroids manually.`);
         return;
     }
 
     const requestData = {
         data: data,
-        n_clusters: 3,
+        n_clusters: numClusters,
         initialization: initMethod === 'manual' ? 'random' : initMethod
     };
 
@@ -167,7 +168,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         console.log("Initialization method changed");
         if (document.getElementById("initialization-method").value === 'manual') {
             svg.on("click", event => {
-                if (manualCentroids.length < 3) {
+                if (manualCentroids.length < parseInt(document.getElementById("num-clusters").value, 10)) {
                     const coords = d3.pointer(event);
                     manualCentroids.push([xScale.invert(coords[0]), yScale.invert(coords[1])]);
                     updateVisualization();
