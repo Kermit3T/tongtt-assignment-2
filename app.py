@@ -31,13 +31,14 @@ def run_kmeans():
         print(f"KMeans completed. History length: {len(history)}")
         
         return jsonify({'history': [
-            {'centroids': centroids.tolist(), 'labels': labels}
+            {'centroids': np.array(centroids).tolist(), 'labels': np.array(labels).tolist()}
             for centroids, labels in history
         ]})
     except Exception as e:
         print(f"An error occurred: {str(e)}")
         print(traceback.format_exc())
         return jsonify({'error': str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=3000)
