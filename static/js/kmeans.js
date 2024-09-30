@@ -63,6 +63,8 @@ function runKMeans() {
         }
         history = result.history;
         currentStep = 0;
+        // Clear manual centroids after running K-means
+        manualCentroids = [];
         updateVisualization();
         document.getElementById("step").disabled = false;
         document.getElementById("converge").disabled = false;
@@ -101,6 +103,18 @@ function updateVisualization() {
         .attr("r", 3)
         .attr("fill", "black");
 
+    // Draw manual centroids
+    svg.selectAll(".manual-centroid")
+        .data(manualCentroids)
+        .enter()
+        .append("circle")
+        .attr("class", "manual-centroid")
+        .attr("cx", d => xScale(d[0]))
+        .attr("cy", d => yScale(d[1]))
+        .attr("r", 5)
+        .attr("fill", "red")
+        .attr("stroke", "black");
+
     // Only draw centroids and color points if we have history
     if (history.length > 0 && history[currentStep]) {
         // Update data point colors
@@ -123,10 +137,39 @@ function updateVisualization() {
     console.log("Visualization updated.");
 
     // Check if the last step is reached and show an alert
-    if (currentStep === history.length - 1) {
+    if (currentStep === history.length - 1 && history.length > 0) {
         alert("The KMeans algorithm has converged.");
     }
+
+    // Add a visible rectangle to check if the SVG area is correctly positioned
+    svg.append("rect")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("fill", "none")
+        .attr("stroke", "blue");
 }
+
+
+function setupManualCentroidPlacement() {
+    console.log("Setting up manual centroid placement");
+    svg.on("click", event => {
+        console.log("SVG clicked");
+        const numClusters = parseInt(document.getElementById("num-clusters").value, 10);
+        if (manualCentroids.length < numClusters) {
+            const coords = d3.pointer(event);
+            const x = xScale.invert(coords[0]);
+            const y = yScale.invert(coords[1]);
+            console.log(`Click coordinates: (${x}, ${y})`);
+            manualCentroids.push([x, y]);
+            updateVisualization();
+            console.log("Manual centroid added:", manualCentroids[manualCentroids.length - 1]);
+        }
+        if (manualCentroids.length === numClusters) {
+            console.log("All manual centroids placed");
+        }
+    });
+}
+
 
 // Event Listeners
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -164,20 +207,28 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
     document.getElementById("initialization-method").addEventListener("change", () => {
         console.log("Initialization method changed");
-        if (document.getElementById("initialization-method").value === 'manual') {
-            svg.on("click", event => {
-                if (manualCentroids.length < parseInt(document.getElementById("num-clusters").value, 10)) {
-                    const coords = d3.pointer(event);
-                    manualCentroids.push([xScale.invert(coords[0]), yScale.invert(coords[1])]);
-                    updateVisualization();
-                }
-            });
+        const initMethod = document.getElementById("initialization-method").value;
+        console.log("Selected initialization method:", initMethod);
+        if (initMethod === 'manual') {
+            console.log("Manual mode selected, setting up centroid placement");
+            manualCentroids = [];
+            setupManualCentroidPlacement();
         } else {
+            console.log("Non-manual mode selected, removing click listener");
             svg.on("click", null);
         }
+        updateVisualization();
     });
 
     generateData();
+
+    // Add this line to set up manual centroid placement initially
+    setupManualCentroidPlacement();
+});
+
+// Add a global click listener to check if clicks are being registered
+document.addEventListener('click', (event) => {
+    console.log(`Global click at (${event.clientX}, ${event.clientY})`);
 });
 
 console.log("JavaScript file loaded");
