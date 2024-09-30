@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KMeans Clustering Visualization</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+</head>
+<body>
+    <h1>KMeans Clustering Visualization</h1>
+    <div id="controls">
+        <select id="initialization-method">
+            <option value="random">Random</option>
+            <option value="farthest_first">Farthest First</option>
+            <option value="kmeans++">KMeans++</option>
+            <option value="manual">Manual</option>
+        </select>
+        <button id="generate-data">Generate New Dataset</button>
+        <button id="step">Step</button>
+        <button id="converge">Converge</button>
+        <button id="reset">Reset</button>
+    </div>
+    <div id="visualization"></div>
+    <script src="/static/js/kmeans.js"></script>
+</body>
+</html>
