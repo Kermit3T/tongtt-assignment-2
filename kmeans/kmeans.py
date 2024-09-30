@@ -22,7 +22,7 @@ class KMeans:
             labels = self._assign_clusters(X)
             history.append((self.centroids.copy(), labels))
             new_centroids = self._update_centroids(X, labels)
-            if np.all(self.centroids == new_centroids):
+            if np.all(np.abs(self.centroids - new_centroids) < 1e-7):
                 break
             self.centroids = new_centroids
 
