@@ -1,10 +1,9 @@
-.PHONY: install run
-
 install:
-	python -m venv venv
-	.\venv\Scripts\activate
-	pip install -r requirements.txt
+    python -m venv venv
+    . venv/bin/activate && pip install -r requirements.txt
 
 run:
-	.\venv\Scripts\activate
-	python app.py
+    . venv/bin/activate && python app.py
+
+test:
+    . venv/bin/activate && pytest
