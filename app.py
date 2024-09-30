@@ -22,11 +22,12 @@ def run_kmeans():
         X = np.array(data['data'])
         n_clusters = data['n_clusters']
         initialization = data['initialization']
+        manual_centroids = data.get('manual_centroids')
         
         print(f"Received data: shape={X.shape}, n_clusters={n_clusters}, initialization={initialization}")
         
         kmeans = KMeans(n_clusters=n_clusters)
-        history = kmeans.fit(X, initialization=initialization)
+        history = kmeans.fit(X, initialization=initialization, manual_centroids=manual_centroids)
         
         print(f"KMeans completed. History length: {len(history)}")
         

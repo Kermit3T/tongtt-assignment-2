@@ -7,13 +7,17 @@ class KMeans:
         self.max_iterations = max_iterations
         self.centroids = None
 
-    def fit(self, X: np.ndarray, initialization: str = 'random') -> List[Tuple[np.ndarray, List[int]]]:
+    def fit(self, X: np.ndarray, initialization: str = 'random', manual_centroids: List[List[float]] = None) -> List[Tuple[np.ndarray, List[int]]]:
         if initialization == 'random':
             self.centroids = self._initialize_random(X)
         elif initialization == 'farthest_first':
             self.centroids = self._initialize_farthest_first(X)
         elif initialization == 'kmeans++':
             self.centroids = self._initialize_kmeans_plus_plus(X)
+        elif initialization == 'manual':
+            if manual_centroids is None or len(manual_centroids) != self.n_clusters:
+                raise ValueError("Manual centroids must be provided and match n_clusters")
+            self.centroids = np.array(manual_centroids)
         else:
             raise ValueError("Invalid initialization method")
 

@@ -37,14 +37,15 @@ function runKMeans() {
     const initMethod = document.getElementById("initialization-method").value;
     const numClusters = parseInt(document.getElementById("num-clusters").value, 10);
     if (initMethod === 'manual' && manualCentroids.length < numClusters) {
-        alert(`Please select at least ${numClusters} centroids manually.`);
+        alert(`Please select ${numClusters} centroids manually.`);
         return;
     }
 
     const requestData = {
         data: data,
         n_clusters: numClusters,
-        initialization: initMethod === 'manual' ? 'random' : initMethod
+        initialization: initMethod,
+        manual_centroids: initMethod === 'manual' ? manualCentroids : null
     };
 
     console.log("Request data:", requestData);
@@ -62,9 +63,6 @@ function runKMeans() {
         }
         history = result.history;
         currentStep = 0;
-        if (initMethod === 'manual') {
-            history[0].centroids = manualCentroids;
-        }
         updateVisualization();
         document.getElementById("step").disabled = false;
         document.getElementById("converge").disabled = false;
